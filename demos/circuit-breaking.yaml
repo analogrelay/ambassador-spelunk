@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-v3
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: hello-world
+    version: v3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+      version: v3
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: hello-world
+        version: v3
+    spec:
+      containers:
+        - name: hello-world-v3
+          image: anursek8s.azurecr.io/helloworld:v3
+          ports:
+            - name: http
+              containerPort: 80
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: hello-world-v3-direct
+spec:
+  prefix: /services/helloworld/v3/
+  service: hello-world-v3:80
+  timeout_ms: 120000
+  circuit_breakers:
+    - max_connections: 1
+      max_pending_requests: 1
+      max_requests: 1

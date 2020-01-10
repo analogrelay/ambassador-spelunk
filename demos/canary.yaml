@@ -1,0 +1,17 @@
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: hello-world-v1
+spec:
+  prefix: /helloworld/
+  service: hello-world-v1
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: hello-world-v2
+spec:
+  prefix: /helloworld/
+  service: hello-world-v2
+  weight: 50

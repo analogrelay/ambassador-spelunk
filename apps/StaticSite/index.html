@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <title>Sample Page</title>
+</head>
+
+<body>
+
+    <button id="do-thing">Do The Thing</button>
+    <p id="result"></p>
+
+    <script>
+        let button = document.getElementById("do-thing");
+        let result = document.getElementById("result");
+        let alert = document.getElementById("alert");
+
+        button.onclick = async (evt) => {
+            let resp = await fetch("https://k8s.httpcontext.dev/services/helloworld/v1/");
+            result.innerHTML = await resp.text();
+        };
+    </script>
+</body>
+
+</html>
